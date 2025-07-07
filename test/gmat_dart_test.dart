@@ -19,6 +19,7 @@ void main() {
       await generate(
         sourceDirectory: helloLibraryRoot,
         buildDirectory: helloLibraryBuild,
+        printResults: false,
       );
 
       final Directory fullDirectory = Directory(helloLibraryRoot).absolute;

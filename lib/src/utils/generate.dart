@@ -7,15 +7,20 @@ import 'compile.dart';
 Future<void> generate({
   required String sourceDirectory,
   required String buildDirectory,
+  bool printResults = true,
 }) async {
   await CMake.build(
     sourceDirectory: Directory(sourceDirectory),
     buildDirectory: Directory(buildDirectory),
   ).then((_) {
-    print('- Completed CMake build!\n');
+    if (printResults) {
+      print('- Completed CMake build!\n');
+    }
   });
 
   await compile(workingDirectory: buildDirectory).then((_) {
-    print('- Completed compile!');
+    if (printResults) {
+      print('- Completed compile!');
+    }
   });
 }
