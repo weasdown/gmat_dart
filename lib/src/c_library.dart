@@ -23,4 +23,9 @@ abstract interface class CLibrary {
 
   /// Absolute path to the library's C source code.
   final Directory sourceDirectory;
+
+  /// Runs CMake on the [sourceDirectory] to produce build files in the [buildDirectory].
+  Future<void> build() {
+    throw UnimplementedError('CLibrary.build() is not yet implemented.');
+  }
 }
