@@ -5,13 +5,22 @@
 // Modified by William Easdown Babb, 2025.
 
 import 'dart:ffi' as ffi;
-import 'dart:io' show Platform, Directory;
+import 'dart:io' show File, Directory, Platform;
 
 import 'package:path/path.dart' as path;
 
 import 'platform_option.dart';
 
-final String helloLibraryPath = 'C_libraries\\hello_library\\build';
+final String helloLibraryRoot = 'C_libraries\\hello_library';
+final String helloLibraryBuild = '$helloLibraryRoot\\build';
+final File helloLibraryFileRelative = File(switch (PlatformOption.current) {
+  PlatformOption.windows => 'Debug\\hello.dll',
+  PlatformOption.linux => 'libhello.so',
+  PlatformOption.macOS => 'libhello.dylib',
+  _ => throw UnsupportedError(
+    'gmat_dart does not support the Platform "${Platform.operatingSystem}".',
+  ),
+});
 
 // FFI signature of the hello_world C function
 typedef HelloWorldFunc = ffi.Void Function();
@@ -20,20 +29,13 @@ typedef HelloWorld = void Function();
 
 void main() {
   // Open the dynamic library
-  final String libraryPath = path.join(
+  final String libraryFilePath = path.join(
     Directory.current.path,
-    helloLibraryPath,
-    switch (PlatformOption.current) {
-      PlatformOption.linux => 'libhello.so',
-      PlatformOption.macOS => 'libhello.dylib',
-      PlatformOption.windows => path.join('Debug', 'hello.dll'),
-      _ => throw UnsupportedError(
-        'gmat_dart does not support the Platform "${Platform.operatingSystem}".',
-      ),
-    },
+    helloLibraryBuild,
+    helloLibraryFileRelative.path,
   );
 
-  final dylib = ffi.DynamicLibrary.open(libraryPath);
+  final dylib = ffi.DynamicLibrary.open(libraryFilePath);
 
   // Look up the C function 'hello_world'
   final HelloWorld hello = dylib
