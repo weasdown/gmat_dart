@@ -3,6 +3,7 @@
 /// More dartdocs go here.
 library;
 
+export 'platform_option.dart';
 export 'src/gmat_dart_base.dart';
 export 'utils.dart';
 
