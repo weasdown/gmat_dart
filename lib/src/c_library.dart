@@ -28,4 +28,9 @@ abstract interface class CLibrary {
   Future<void> build() {
     throw UnimplementedError('CLibrary.build() is not yet implemented.');
   }
+
+  /// Compiles the build files in the [buildDirectory] to produce a dynamic library file.
+  Future<void> compile() {
+    throw UnimplementedError('CLibrary.compile() is not yet implemented.');
+  }
 }
