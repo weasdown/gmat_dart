@@ -7,6 +7,8 @@ import 'dart:io' show Platform, Directory;
 
 import 'package:path/path.dart' as path;
 
+final String helloLibraryPath = 'C_libraries\\hello_library\\build';
+
 // FFI signature of the hello_world C function
 typedef HelloWorldFunc = ffi.Void Function();
 // Dart type definition for calling the C foreign function
@@ -16,14 +18,14 @@ void main() {
   // Open the dynamic library
   var libraryPath = path.join(
     Directory.current.path,
-    'hello_library',
+    helloLibraryPath,
     'libhello.so',
   );
 
   if (Platform.isMacOS) {
     libraryPath = path.join(
       Directory.current.path,
-      'hello_library',
+      helloLibraryPath,
       'libhello.dylib',
     );
   }
@@ -31,7 +33,7 @@ void main() {
   if (Platform.isWindows) {
     libraryPath = path.join(
       Directory.current.path,
-      'hello_library',
+      helloLibraryPath,
       'Debug',
       'hello.dll',
     );
