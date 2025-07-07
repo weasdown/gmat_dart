@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:path/path.dart' as path;
+
 import '../platform_option.dart';
 
 extension PathAppend on Directory {
@@ -10,7 +12,8 @@ extension PathAppend on Directory {
 }
 
 abstract interface class CLibrary {
-  CLibrary({required this.sourceDirectory});
+  CLibrary({required this.sourceDirectory, String? name})
+    : _name = name ?? path.basename(path.dirname(sourceDirectory.path));
 
   /// Absolute [Directory] where CMake build outputs are saved.
   Directory get buildDirectory => Directory('$sourceDirectory/build');
@@ -20,6 +23,11 @@ abstract interface class CLibrary {
       PlatformOption.current == PlatformOption.windows
       ? Directory('${buildDirectory.path}/Debug')
       : buildDirectory;
+
+  final String _name;
+
+  /// The name of this library.
+  String get name => _name;
 
   /// Absolute path to the library's C source code.
   final Directory sourceDirectory;
