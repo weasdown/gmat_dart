@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:gmat_dart/platform_option.dart';
+import '../platform_option.dart';
 
 extension PathAppend on Directory {
   /// Appends a [path] to this [Directory].
