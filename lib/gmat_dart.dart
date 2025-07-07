@@ -4,6 +4,7 @@
 library;
 
 export 'platform_option.dart';
+export 'src/c_library.dart';
 export 'src/gmat_dart_base.dart';
 export 'utils.dart';
 
