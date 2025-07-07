@@ -33,4 +33,9 @@ abstract interface class CLibrary {
   Future<void> compile() {
     throw UnimplementedError('CLibrary.compile() is not yet implemented.');
   }
+
+  /// Runs [build] then [compile].
+  Future<void> generate() {
+    throw UnimplementedError('CLibrary.generate() is not yet implemented.');
+  }
 }
