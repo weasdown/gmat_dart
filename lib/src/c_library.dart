@@ -38,8 +38,26 @@ abstract interface class CLibrary {
   }
 
   /// Compiles the build files in the [buildDirectory] to produce a dynamic library file.
-  Future<void> compile() {
-    throw UnimplementedError('CLibrary.compile() is not yet implemented.');
+  Future<void> compile({
+    int vsYear = 2022,
+    String vsEdition = 'Community',
+  }) async {
+    // Compile library.
+    if (Platform.isWindows) {
+      // If the buildDirectory does not exist, create it.
+      Directory(buildDirectory.path).create();
+
+      final String msbuildPath =
+          'C:\\Program Files\\Microsoft Visual Studio\\$vsYear\\$vsEdition\\MSBuild\\Current\\Bin';
+
+      // Run 'msbuild' from Visual Studio.
+      await Process.run('$msbuildPath\\MSBuild.exe', [
+        '$name.sln',
+      ], workingDirectory: buildDirectory.path);
+    } else {
+      // Run 'make'.
+      await Process.run('make', [], workingDirectory: buildDirectory.path);
+    }
   }
 
   /// Runs [build] then [compile].
