@@ -21,6 +21,13 @@ final File helloLibraryFileRelative = File(switch (PlatformOption.current) {
     'gmat_dart does not support the Platform "${Platform.operatingSystem}".',
   ),
 });
+final File helloLibraryFileAbsolute = File(
+  path.join(
+    Directory.current.path,
+    helloLibraryBuild,
+    helloLibraryFileRelative.path,
+  ),
+);
 
 // FFI signature of the hello_world C function
 typedef HelloWorldFunc = ffi.Void Function();
@@ -29,13 +36,7 @@ typedef HelloWorld = void Function();
 
 void main() {
   // Open the dynamic library
-  final String libraryFilePath = path.join(
-    Directory.current.path,
-    helloLibraryBuild,
-    helloLibraryFileRelative.path,
-  );
-
-  final dylib = ffi.DynamicLibrary.open(libraryFilePath);
+  final dylib = ffi.DynamicLibrary.open(helloLibraryFileAbsolute.path);
 
   // Look up the C function 'hello_world'
   final HelloWorld hello = dylib
