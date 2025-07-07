@@ -20,28 +20,18 @@ typedef HelloWorld = void Function();
 
 void main() {
   // Open the dynamic library
-  // TODO: refactor out path.join by using a List.generate that switches across PlatformOptions.
-  final String libraryPath = switch (PlatformOption.current) {
-    PlatformOption.linux => path.join(
-      Directory.current.path,
-      helloLibraryPath,
-      'libhello.so',
-    ),
-    PlatformOption.macOS => path.join(
-      Directory.current.path,
-      helloLibraryPath,
-      'libhello.dylib',
-    ),
-    PlatformOption.windows => path.join(
-      Directory.current.path,
-      helloLibraryPath,
-      'Debug',
-      'hello.dll',
-    ),
-    _ => throw UnsupportedError(
-      'gmat_dart does not support the Platform "${Platform.operatingSystem}".',
-    ),
-  };
+  final String libraryPath = path.join(
+    Directory.current.path,
+    helloLibraryPath,
+    switch (PlatformOption.current) {
+      PlatformOption.linux => 'libhello.so',
+      PlatformOption.macOS => 'libhello.dylib',
+      PlatformOption.windows => path.join('Debug', 'hello.dll'),
+      _ => throw UnsupportedError(
+        'gmat_dart does not support the Platform "${Platform.operatingSystem}".',
+      ),
+    },
+  );
 
   final dylib = ffi.DynamicLibrary.open(libraryPath);
 
