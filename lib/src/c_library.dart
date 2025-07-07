@@ -11,7 +11,7 @@ extension PathAppend on Directory {
   Directory operator /(String path) => Directory('${this.path}/$path');
 }
 
-abstract interface class CLibrary {
+interface class CLibrary {
   CLibrary({required this.sourceDirectory, String? name})
     : _name = name ?? path.basename(path.dirname(sourceDirectory.path));
 
