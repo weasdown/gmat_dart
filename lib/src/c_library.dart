@@ -10,16 +10,17 @@ extension PathAppend on Directory {
 }
 
 abstract interface class CLibrary {
-  CLibrary({required this.sourcePath});
+  CLibrary({required this.sourceDirectory});
 
   /// Absolute [Directory] where CMake build outputs are saved.
-  Directory get buildPath => Directory('$sourcePath/build');
+  Directory get buildDirectory => Directory('$sourceDirectory/build');
 
   /// Absolute [Directory] where compiled files are saved.
-  Directory get compilePath => PlatformOption.current == PlatformOption.windows
-      ? Directory('${buildPath.path}/Debug')
-      : buildPath;
+  Directory get compileDirectory =>
+      PlatformOption.current == PlatformOption.windows
+      ? Directory('${buildDirectory.path}/Debug')
+      : buildDirectory;
 
   /// Absolute path to the library's C source code.
-  final Directory sourcePath;
+  final Directory sourceDirectory;
 }
