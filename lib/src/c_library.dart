@@ -16,30 +16,13 @@ interface class CLibrary {
   CLibrary({required this.sourceDirectory, String? name})
     : _name = name ?? path.basename(path.dirname(sourceDirectory.path));
 
-  /// Absolute [Directory] where CMake build outputs are saved.
-  Directory get buildDirectory => Directory('$sourceDirectory/build');
-
-  /// Absolute [Directory] where compiled files are saved.
-  Directory get compileDirectory =>
-      PlatformOption.current == PlatformOption.windows
-      ? Directory('${buildDirectory.path}/Debug')
-      : buildDirectory;
-
-  /// Opens the dynamic library file.
-  DynamicLibrary get library => DynamicLibrary.open(_libraryFile.path);
-
-  final String _name;
-
-  /// The name of this library.
-  String get name => _name;
-
-  /// Absolute path to the library's C source code.
-  final Directory sourceDirectory;
-
   /// Runs CMake on the [sourceDirectory] to produce build files in the [buildDirectory].
   Future<void> build() {
     throw UnimplementedError('CLibrary.build() is not yet implemented.');
   }
+
+  /// Absolute [Directory] where CMake build outputs are saved.
+  Directory get buildDirectory => Directory('$sourceDirectory/build');
 
   /// Compiles the build files in the [buildDirectory] to produce a dynamic library file.
   Future<void> compile({
@@ -64,10 +47,19 @@ interface class CLibrary {
     }
   }
 
+  /// Absolute [Directory] where compiled files are saved.
+  Directory get compileDirectory =>
+      PlatformOption.current == PlatformOption.windows
+      ? Directory('${buildDirectory.path}/Debug')
+      : buildDirectory;
+
   /// Runs [build] then [compile].
   Future<void> generate() {
     throw UnimplementedError('CLibrary.generate() is not yet implemented.');
   }
+
+  /// Opens the dynamic library file.
+  DynamicLibrary get library => DynamicLibrary.open(_libraryFile.path);
 
   /// Gets the absolute path to the dynamic library file stored in the [compileDirectory].
   File get _libraryFile => File(
@@ -87,4 +79,12 @@ interface class CLibrary {
       'gmat_dart does not support the Platform "${Platform.operatingSystem}".',
     ),
   });
+
+  final String _name;
+
+  /// The name of this library.
+  String get name => _name;
+
+  /// Absolute path to the library's C source code.
+  final Directory sourceDirectory;
 }
