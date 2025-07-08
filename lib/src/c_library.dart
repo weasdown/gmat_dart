@@ -25,6 +25,9 @@ interface class CLibrary {
       ? Directory('${buildDirectory.path}/Debug')
       : buildDirectory;
 
+  /// Opens the dynamic library file.
+  DynamicLibrary get library => DynamicLibrary.open(_libraryFile.path);
+
   final String _name;
 
   /// The name of this library.
