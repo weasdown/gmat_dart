@@ -9,7 +9,7 @@ void main() {
   group('CLibrary', () {
     test('Build for hello_library', () {
       final CLibrary helloLibrary = CLibrary(
-        sourceDirectory: librariesDirectory / 'hello_library',
+        sourceDirectory: librariesDirectory / 'hello',
       );
 
       // TODO add expect
