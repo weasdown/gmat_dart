@@ -11,7 +11,7 @@ import 'package:path/path.dart' as path;
 
 import 'platform_option.dart';
 
-final String helloLibraryRoot = 'C_libraries\\hello_library';
+final String helloLibraryRoot = 'C_libraries\\hello';
 final String helloLibraryBuild = '$helloLibraryRoot\\build';
 final File helloLibraryFileRelative = File(switch (PlatformOption.current) {
   PlatformOption.windows => 'Debug\\hello.dll',
