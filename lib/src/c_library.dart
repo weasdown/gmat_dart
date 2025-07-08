@@ -72,9 +72,9 @@ interface class CLibrary {
 
   /// Gets the relative path to the dynamic library file stored in the [compileDirectory].
   File get _libraryFileRelative => File(switch (PlatformOption.current) {
-    PlatformOption.windows => 'Debug\\hello.dll',
-    PlatformOption.linux => 'libhello.so',
-    PlatformOption.macOS => 'libhello.dylib',
+    PlatformOption.windows => 'Debug\\$name.dll',
+    PlatformOption.linux => 'lib$name.so',
+    PlatformOption.macOS => 'lib$name.dylib',
     _ => throw UnsupportedError(
       'gmat_dart does not support the Platform "${Platform.operatingSystem}".',
     ),
