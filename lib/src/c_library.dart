@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
@@ -64,4 +65,23 @@ interface class CLibrary {
   Future<void> generate() {
     throw UnimplementedError('CLibrary.generate() is not yet implemented.');
   }
+
+  /// Gets the absolute path to the dynamic library file stored in the [compileDirectory].
+  File get _libraryFile => File(
+    path.join(
+      Directory.current.path,
+      buildDirectory.path,
+      _libraryFileRelative.path,
+    ),
+  );
+
+  /// Gets the relative path to the dynamic library file stored in the [compileDirectory].
+  File get _libraryFileRelative => File(switch (PlatformOption.current) {
+    PlatformOption.windows => 'Debug\\hello.dll',
+    PlatformOption.linux => 'libhello.so',
+    PlatformOption.macOS => 'libhello.dylib',
+    _ => throw UnsupportedError(
+      'gmat_dart does not support the Platform "${Platform.operatingSystem}".',
+    ),
+  });
 }
