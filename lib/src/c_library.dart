@@ -1,4 +1,4 @@
-import 'dart:ffi';
+import 'dart:ffi' as ffi;
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
@@ -28,7 +28,7 @@ interface class CLibrary {
   }
 
   /// Absolute [Directory] where CMake build outputs are saved.
-  Directory get buildDirectory => Directory('$sourceDirectory/build');
+  Directory get buildDirectory => Directory('${sourceDirectory.path}/build');
 
   /// Compiles the build files in the [buildDirectory] to produce a dynamic library file.
   Future<void> compile({
@@ -65,16 +65,11 @@ interface class CLibrary {
   }
 
   /// Opens the dynamic library file.
-  DynamicLibrary get library => DynamicLibrary.open(_libraryFile.path);
+  ffi.DynamicLibrary get library => ffi.DynamicLibrary.open(_libraryFile.path);
 
   /// Gets the absolute path to the dynamic library file stored in the [compileDirectory].
-  File get _libraryFile => File(
-    path.join(
-      Directory.current.path,
-      buildDirectory.path,
-      _libraryFileRelative.path,
-    ),
-  );
+  File get _libraryFile =>
+      File(path.join(buildDirectory.path, _libraryFileRelative.path)).absolute;
 
   /// Gets the relative path to the dynamic library file stored in the [compileDirectory].
   File get _libraryFileRelative => File(switch (PlatformOption.current) {
