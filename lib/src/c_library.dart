@@ -64,6 +64,139 @@ interface class CLibrary {
     throw UnimplementedError('CLibrary.generate() is not yet implemented.');
   }
 
+  /// Gets a function
+  Function getFunction<
+    R extends ffi.NativeType
+    // T extends ffi.NativeFunction<R>,
+    // T extends Function,
+    // F extends Function
+  >({
+    required String name,
+    // TODO convert to general FFIFunction, to not restrict number of arguments.
+    // required Type ffiSignature,
+    // required Type dartSignature,
+    List<Type> argTypes = const [],
+  }) {
+    // TODO remove commented code
+    // // final HelloWorld hello = library
+    // //     .lookup<ffi.NativeFunction<HelloWorldFunc>>(functionName)
+    // //     .asFunction();
+    // final Function0<ffi.Void> function = library
+    //     .lookup<ffi.NativeFunction<FFIVoidFunction0>>(functionName)
+    //     .asFunction();
+
+    // Look up the C function 'hello_world'
+
+    // Check R is a subtype of NativeType, rather than NativeType itself.
+    if (R.toString() == 'NativeType') {
+      throw ArgumentError.value(
+        R,
+        'R',
+        'must be a subtype of NativeType, not a NativeType itself. \n\t- Check '
+            'you have passed a type parameter to getFunction(), to call it as '
+            'getFunction<T>(), where T is a subtype of NativeType. ',
+      );
+    }
+
+    return switch (argTypes.length) {
+      0 => _getFunction0<R>(name: name),
+      1 => _getFunction1<R>(name: name, A: argTypes.first),
+      2 => _getFunction2<R>(name: name, A: argTypes.first, B: argTypes[1]),
+      3 => _getFunction3<R>(
+        name: name,
+        A: argTypes.first,
+        B: argTypes[1],
+        C: argTypes[2],
+      ),
+      _ => throw UnsupportedError(
+        'No more than three function arguments are currently supported.',
+      ),
+    };
+
+    // return library.lookupFunction<
+    //     ffi.Void Function(),
+    // // ArrayFunction0,
+    //     void Function()
+    // // dartSignature
+    // >(name);
+    //
+    // // // TODO use example to help implement other signatures.
+    // // return library.lookupFunction<
+    // //   ffi.Int32 Function(ffi.Int32, ffi.Int32),
+    // //   int Function(int, int)
+    // // >(functionName);
+  }
+
+  /// Gets a function that takes no arguments, from its [name].
+  Function _getFunction0<R extends ffi.NativeType>({required String name}) =>
+      switch (R.toString()) {
+        'Void' => library.lookupFunction<ffi.Void Function(), void Function()>(
+          name,
+        ),
+        _ => throw UnimplementedError(
+          'Handling of return type ${R.toString()} is not yet implemented.',
+        ),
+      };
+
+  /// Gets a function that takes one argument, from its [name].
+  Function _getFunction1<R extends ffi.NativeType>({
+    required String name,
+    required Type A,
+  }) {
+    throw UnimplementedError(
+      'CLibrary._getFunction1() is not yet implemented.',
+    );
+    //
+    // // // Function getFromAType<
+    // // //   Function1R extends ffi.NativeType,
+    // // //   Function1A extends ffi.NativeType
+    // // // >() {
+    // // //   return switch (Function1R.runtimeType) {
+    // // //     == ffi.Array => throw UnimplementedError(),
+    // // //     // TODO: Handle this case.
+    // // //     _ => throw UnimplementedError(),
+    // // //   };
+    // // // }
+    //
+    // return switch (R.runtimeType) {
+    //   // The return type will be ffi.Void.
+    //   == ffi.Void => switch (A.runtimeType) {
+    //     // The argument type will be ffi.Array.
+    //     == ffi.Array =>
+    //       library.lookupFunction<ffi.Void Function(A), void Function(int)>(
+    //         name,
+    //       ), //getFromAType<ffi.Void>(),
+    //     // ffi.Void does not make sense as an argument type for a function that explicitly has an argument.
+    //     == ffi.Void => throw TypeError(),
+    //     _ => throw UnimplementedError(),
+    //   },
+    //   _ => throw UnimplementedError(),
+    // };
+  }
+
+  /// Gets a function that takes two arguments, from its [name].
+  Function _getFunction2<R extends ffi.NativeType>({
+    required String name,
+    required Type A,
+    required Type B,
+  }) {
+    throw UnimplementedError(
+      'CLibrary._getFunction2() is not yet implemented.',
+    );
+  }
+
+  /// Gets a function that takes three arguments, from its [name].
+  Function _getFunction3<R extends ffi.NativeType>({
+    required String name,
+    required Type A,
+    required Type B,
+    required Type C,
+  }) {
+    throw UnimplementedError(
+      'CLibrary._getFunction3() is not yet implemented.',
+    );
+  }
+
   /// Opens the dynamic library file.
   ffi.DynamicLibrary get library => ffi.DynamicLibrary.open(_libraryFile.path);
 
