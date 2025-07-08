@@ -1,3 +1,4 @@
+import 'dart:ffi' as ffi;
 import 'dart:io';
 
 import 'package:gmat_dart/src/c_library.dart';
@@ -12,7 +13,16 @@ void main() {
         sourceDirectory: librariesDirectory / 'hello',
       );
 
-      // TODO add expect
+      expect(helloLibrary.name, 'hello');
+
+      final void Function() hello =
+          helloLibrary.getFunction<ffi.Void>(name: 'hello_world')
+              as void Function();
+
+      expect(hello, isA<void Function()>());
+
+      print('\nCalling hello():');
+      hello();
     });
 
     // TODO implement test for running created library
