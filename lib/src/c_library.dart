@@ -13,8 +13,14 @@ extension PathAppend on Directory {
 }
 
 interface class CLibrary {
-  CLibrary({required this.sourceDirectory, String? name})
-    : _name = name ?? path.basename(path.dirname(sourceDirectory.path));
+  CLibrary({
+    required Directory sourceDirectory,
+    bool makeDirectory = false,
+    String? name,
+  }) : sourceDirectory = sourceDirectory.absolute,
+       _name = name ?? path.basename(sourceDirectory.path) {
+    _validateSourceDirectory(makeDirectory);
+  }
 
   /// Runs CMake on the [sourceDirectory] to produce build files in the [buildDirectory].
   Future<void> build() {
@@ -87,4 +93,28 @@ interface class CLibrary {
 
   /// Absolute path to the library's C source code.
   final Directory sourceDirectory;
+
+  Future<void> _validateSourceDirectory(bool makeDirectory) async {
+    if (await sourceDirectory.exists()) {
+      return;
+    }
+    // sourceDirectory does not exist.
+    else {
+      // The user expected the sourceDirectory to already exist, so throw an error.
+      if (!makeDirectory) {
+        throw ArgumentError.value(
+          sourceDirectory,
+          'sourceDirectory',
+          'this directory does not exist. Please pass an existing directory to '
+              'the CLibrary constructor, or set the makeDirectory argument to true.',
+        );
+      }
+      // sourceDirectory does not currently exist but the user has allowed it to be created during the building of the CLibrary.
+      else {
+        // Create the sourceDirectory then validate that sourceDirectory now exists.
+        sourceDirectory.create(recursive: true);
+        _validateSourceDirectory(false);
+      }
+    }
+  }
 }
