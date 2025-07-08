@@ -216,6 +216,24 @@ interface class CLibrary {
 
   final String _name;
 
+  /// Looks up a symbol in the [library] and returns its address in
+  /// memory.
+  ffi.Pointer<T> lookup<T extends ffi.NativeType>(String name) {
+    throw UnimplementedError('CLibrary.lookup() is not yet implemented.');
+  }
+
+  /// Looks up a native function in the [library] and returns it as a Dart function.
+  ///
+  /// `T` is the C function signature, and `F` is the Dart function signature.
+  F lookupFunction<T extends Function, F extends Function>(
+    String name, {
+    bool isLeaf = false,
+  }) {
+    throw UnimplementedError(
+      'CLibrary.lookupFunction() is not yet implemented.',
+    );
+  }
+
   /// The name of this library.
   String get name => _name;
 
