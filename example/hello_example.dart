@@ -1,5 +1,3 @@
-import 'dart:ffi' as ffi;
-
 import 'package:gmat_dart/gmat_dart.dart';
 
 void main() {
@@ -8,9 +6,8 @@ void main() {
   );
   print('- Built hello dynamic library.');
 
-  final void Function() hello =
-      helloLibrary.getFunction<ffi.Void>(name: 'hello_world')
-          as void Function();
+  final VoidFunction hello = helloLibrary
+      .lookupFunction<VoidFunctionFFI, void Function()>('hello_world');
 
   print('- Got hello() function from dynamic library.');
 
