@@ -134,7 +134,8 @@ interface class CLibrary {
           name,
         ),
         _ => throw UnimplementedError(
-          'Handling of return type ${R.toString()} is not yet implemented.',
+          'Handling of return type ${R.toString()} is not yet implemented.\n\n'
+          'R == ${R.toString()}',
         ),
       };
 
@@ -218,8 +219,21 @@ interface class CLibrary {
 
   /// Looks up a symbol in the [library] and returns its address in
   /// memory.
-  ffi.Pointer<T> lookup<T extends ffi.NativeType>(String name) {
-    throw UnimplementedError('CLibrary.lookup() is not yet implemented.');
+  F lookup<
+    // T extends ffi.NativeType
+    F extends Function,
+    T extends ffi.NativeFunction<F>
+  >(String name) {
+    // throw UnimplementedError('CLibrary.lookup() is not yet implemented.');
+
+    // <@DartRepresentationOf('NF') DF extends Function>
+
+    final F function =
+        library
+                .lookup<ffi.NativeFunction<ffi.Void Function()>>(name)
+                .asFunction<void Function()>()
+            as F;
+    return function;
   }
 
   /// Looks up a native function in the [library] and returns it as a Dart function.
@@ -229,9 +243,22 @@ interface class CLibrary {
     String name, {
     bool isLeaf = false,
   }) {
-    throw UnimplementedError(
-      'CLibrary.lookupFunction() is not yet implemented.',
-    );
+    // throw UnimplementedError(
+    //   'CLibrary.lookupFunction() is not yet implemented.',
+    // );
+
+    // T = T as ffi.NativeType;
+    // ffi.NativeType ffiType = T as ffi.NativeType;
+
+    final F function =
+        library.lookupFunction<
+              // ffiType, //ignore:must_be_a_native_function_type, non_type_as_type_argument
+              // F
+              ffi.Void Function(),
+              void Function()
+            >(name)
+            as F;
+    return function;
   }
 
   /// The name of this library.

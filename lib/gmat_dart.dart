@@ -7,6 +7,8 @@ export 'function_typedefs.dart';
 export 'platform_option.dart';
 export 'src/c_library.dart';
 export 'src/gmat_dart_base.dart';
+export 'src/library_functions/dart_function.dart';
+export 'src/library_functions/ffi_function.dart';
 export 'utils.dart';
 
 // TODO: Export any libraries intended for clients of this package.

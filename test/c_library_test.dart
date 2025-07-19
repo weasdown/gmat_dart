@@ -1,5 +1,3 @@
-import 'dart:ffi' as ffi;
-
 import 'package:gmat_dart/gmat_dart.dart';
 import 'package:test/test.dart';
 
@@ -12,9 +10,29 @@ void main() {
 
       expect(helloLibrary.name, 'hello');
 
-      final void Function() hello =
-          helloLibrary.getFunction<ffi.Void>(name: 'hello_world')
-              as void Function();
+      // // TODO reinstate working version
+      // final void Function() hello =
+      //     helloLibrary.getFunction<ffi.Void>(name: 'hello_world')
+      //         as void Function();
+
+      // // final Function hello = helloLibrary
+      // //     .lookupFunction<ffi.Int Function(), int Function()>('hello_world');
+      //
+      final void Function() hello = FFIVoidFunction0(
+        library: helloLibrary,
+        name: 'hello_world',
+      ).toDartFunction();
+      // hello();
+      //
+      // // final Function hello = helloLibrary
+      // //     .lookup<void Function(), ffi.NativeFunction<void Function()>>(
+      // //       'hello_world',
+      // //     );
+
+      // DartVoidFunction0 helloDF =
+      //     hello.toDartFunction().call() as DartVoidFunction0;
+
+      // expect(hello.dartFunction, isA<void Function()>());
 
       expect(hello, isA<void Function()>());
 
