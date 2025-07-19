@@ -9,6 +9,7 @@ import 'dart:io' show File, Directory, Platform;
 
 import 'package:path/path.dart' as path;
 
+import 'function_typedefs.dart';
 import 'platform_option.dart';
 
 final String helloLibraryRoot = 'C_libraries\\hello';
@@ -28,11 +29,6 @@ final File helloLibraryFileAbsolute = File(
     helloLibraryFileRelative.path,
   ),
 );
-
-// FFI signature of the hello_world C function
-typedef VoidFunctionFFI = Void Function();
-// Dart type definition for calling the C foreign function
-typedef VoidFunction = void Function();
 
 void main() {
   // Open the dynamic library
