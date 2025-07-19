@@ -11,7 +11,7 @@ import 'package:path/path.dart' as path;
 
 import '../platform_option.dart';
 
-final String helloLibraryPathRelative = 'C_libraries\\hello_library\\build';
+final String helloLibraryPathRelative = 'C_libraries\\hello\\build';
 
 // FFI signature of the hello_world C function
 typedef HelloWorldFunc = ffi.Void Function();
