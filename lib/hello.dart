@@ -4,7 +4,7 @@
 //
 // Modified by William Easdown Babb, 2025.
 
-import 'dart:ffi' as ffi;
+import 'dart:ffi';
 import 'dart:io' show File, Directory, Platform;
 
 import 'package:path/path.dart' as path;
@@ -30,18 +30,18 @@ final File helloLibraryFileAbsolute = File(
 );
 
 // FFI signature of the hello_world C function
-typedef HelloWorldFunc = ffi.Void Function();
+typedef VoidFunctionFFI = Void Function();
 // Dart type definition for calling the C foreign function
-typedef HelloWorld = void Function();
+typedef VoidFunction = void Function();
 
 void main() {
   // Open the dynamic library
-  final dylib = ffi.DynamicLibrary.open(helloLibraryFileAbsolute.path);
+  final dylib = DynamicLibrary.open(helloLibraryFileAbsolute.path);
 
   // Look up the C function 'hello_world'
-  final HelloWorld hello = dylib
-      .lookup<ffi.NativeFunction<HelloWorldFunc>>('hello_world')
-      .asFunction();
+  final VoidFunction hello = dylib
+      .lookup<NativeFunction<VoidFunctionFFI>>('hello_world')
+      .asFunction<void Function()>();
   // Call the function
   hello();
 }
